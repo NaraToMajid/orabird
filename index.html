@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>ORA BIRD</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="game-wrapper">
+    <div id="game-container">
+        <div id="hud">
+            SKOR: <span id="current-score">0</span> | TERBAIK: <span id="high-score">0</span>
+        </div>
+
+        <div id="home-menu" class="overlay">
+            <img src="skinbird1.webp" class="menu-bird" onerror="this.style.display='none'">
+            <h1>ORA BIRD</h1>
+            <div class="button-group">
+                <button class="menu-btn" onclick="startGame()">MAIN</button>
+                <button class="menu-btn btn-blue" onclick="showSkins()">SKIN</button>
+                <button class="menu-btn btn-red" onclick="exitGame()">KELUAR</button>
+            </div>
+        </div>
+
+        <div id="skin-menu" class="overlay" style="display: none;">
+            <h2>PILIH SKIN</h2>
+            <div class="tab-container">
+                <button class="tab-btn active" onclick="switchTab('bird', event)">KARAKTER</button>
+                <button class="tab-btn" onclick="switchTab('pipe', event)">PIPA</button>
+                <button class="tab-btn" onclick="switchTab('bg', event)">LATAR</button>
+            </div>
+            <div class="skin-grid" id="skin-grid"></div>
+            <button class="menu-btn btn-small" onclick="hideSkins()">KEMBALI</button>
+        </div>
+
+        <canvas id="gameCanvas"></canvas>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
