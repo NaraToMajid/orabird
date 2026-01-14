@@ -9,35 +9,34 @@
 </head>
 <body>
 
-<div id="game-wrapper">
-    <div id="game-container">
-        <div id="hud">
-            SKOR: <span id="current-score">0</span> | TERBAIK: <span id="high-score">0</span>
-        </div>
-
-        <div id="home-menu" class="overlay">
-            <img src="skinbird1.webp" class="menu-bird" onerror="this.style.display='none'">
-            <h1>ORA BIRD</h1>
-            <div class="button-group">
-                <button class="menu-btn" onclick="startGame()">MAIN</button>
-                <button class="menu-btn btn-blue" onclick="showSkins()">SKIN</button>
-                <button class="menu-btn btn-red" onclick="exitGame()">KELUAR</button>
-            </div>
-        </div>
-
-        <div id="skin-menu" class="overlay" style="display: none;">
-            <h2>PILIH SKIN</h2>
-            <div class="tab-container">
-                <button class="tab-btn active" onclick="switchTab('bird', event)">KARAKTER</button>
-                <button class="tab-btn" onclick="switchTab('pipe', event)">PIPA</button>
-                <button class="tab-btn" onclick="switchTab('bg', event)">LATAR</button>
-            </div>
-            <div class="skin-grid" id="skin-grid"></div>
-            <button class="menu-btn btn-small" onclick="hideSkins()">KEMBALI</button>
-        </div>
-
-        <canvas id="gameCanvas"></canvas>
+<div id="game-container">
+    <div id="hud" style="display: none;">
+        <span id="score-label">SKOR: <span id="current-score">0</span></span>
+        <span id="best-label">TERBAIK: <span id="high-score">0</span></span>
     </div>
+
+    <div id="home-menu" class="overlay">
+        <img src="skinbird1.webp" class="menu-bird" onerror="this.style.display='none'">
+        <h1>ORA BIRD</h1>
+        <div class="button-group">
+            <button class="menu-btn" onclick="startGame()">MAIN</button>
+            <button class="menu-btn btn-blue" onclick="showSkins()">SKIN</button>
+            <button class="menu-btn btn-red" onclick="exitGame()">KELUAR</button>
+        </div>
+    </div>
+
+    <div id="skin-menu" class="overlay" style="display: none;">
+        <h2>PILIH SKIN</h2>
+        <div class="tab-container">
+            <button class="tab-btn active" onclick="switchTab('bird', event)">BIRD</button>
+            <button class="tab-btn" onclick="switchTab('pipe', event)">PIPA</button>
+            <button class="tab-btn" onclick="switchTab('bg', event)">LATAR</button>
+        </div>
+        <div class="skin-grid" id="skin-grid"></div>
+        <button class="menu-btn btn-small" onclick="hideSkins()">KEMBALI</button>
+    </div>
+
+    <canvas id="gameCanvas"></canvas>
 </div>
 
 <script src="script.js"></script>
