@@ -28,24 +28,48 @@ function setupDimensions() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     
-    // Skala dinamis berdasarkan ukuran layar
-    const scale = Math.min(canvas.width, canvas.height) / 400;
-    birdSize = 45 * scale;
+    // Skala dinamis berdasarkan ukuran layar terkecil
+    const scale = Math.min(canvas.width, canvas.height) / 450;
+    birdSize = 55 * scale;
     gravity = 0.25 * scale;
-    jump = -5.5 * scale;
-    pipeSpeed = 4 * scale;
-    pipeGap = 180 * scale;
+    jump = -6 * scale;
+    pipeSpeed = (canvas.width < canvas.height) ? 3.5 * scale : 5 * scale;
+    pipeGap = 200 * scale;
 
     if (!bird) {
         bird = { x: canvas.width * 0.2, y: canvas.height / 2, velocity: 0 };
-    } else {
-        bird.x = canvas.width * 0.2;
     }
 }
 
 function updateHUD() {
     document.getElementById('current-score').innerText = score;
     document.getElementById('high-score').innerText = highScore;
+}
+
+function startGame() {
+    // Aktifkan Fullscreen untuk menghilangkan bar pencarian
+    const container = document.documentElement;
+    if (container.requestFullscreen) container.requestFullscreen();
+    else if (container.webkitRequestFullscreen) container.webkitRequestFullscreen();
+
+    setTimeout(() => {
+        setupDimensions();
+        score = 0;
+        pipes = [];
+        bird = { x: canvas.width * 0.2, y: canvas.height / 2, velocity: 0 };
+        gameState = 'PLAYING';
+        document.getElementById('home-menu').style.display = 'none';
+        document.getElementById('hud').style.display = 'flex';
+        updateHUD();
+        gameLoop();
+    }, 300);
+}
+
+function endGame() {
+    gameState = 'MENU';
+    cancelAnimationFrame(animationId);
+    document.getElementById('home-menu').style.display = 'flex';
+    document.getElementById('hud').style.display = 'none';
 }
 
 function showSkins() {
@@ -87,8 +111,8 @@ function selectSkin(type, index) {
 
 function createPipe() {
     const pipeW = birdSize * 1.8;
-    const minH = 50;
-    const h = Math.floor(Math.random() * (canvas.height - pipeGap - 100)) + minH;
+    const minH = 100;
+    const h = Math.floor(Math.random() * (canvas.height - pipeGap - 200)) + minH;
     pipes.push({ x: canvas.width, y: h, gap: pipeGap, width: pipeW, passed: false });
 }
 
@@ -120,13 +144,14 @@ function update() {
             }
             updateHUD();
         }
-        if (p.x + p.width < -100) pipes.splice(i, 1);
+        if (p.x + p.width < -150) pipes.splice(i, 1);
     });
 }
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
+    // BG
     const bgImg = assets.bg[selections.bg];
     if (bgImg.complete && bgImg.naturalWidth !== 0) {
         ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
@@ -134,14 +159,15 @@ function draw() {
         ctx.fillStyle = "#70c5ce"; ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
+    // Pipa
     pipes.forEach(p => {
         const pImg = assets.pipe[selections.pipe];
         if (pImg.complete && pImg.naturalWidth !== 0) {
             ctx.drawImage(pImg, p.x, 0, p.width, p.y);
             ctx.drawImage(pImg, p.x, p.y + p.gap, p.width, canvas.height);
-            // Muncung
-            ctx.drawImage(pImg, p.x - 5, p.y - 30, p.width + 10, 30);
-            ctx.drawImage(pImg, p.x - 5, p.y + p.gap, p.width + 10, 30);
+            // Muncung (Sama dengan gambar pipa)
+            ctx.drawImage(pImg, p.x - 10, p.y - 35, p.width + 20, 35);
+            ctx.drawImage(pImg, p.x - 10, p.y + p.gap, p.width + 20, 35);
         } else {
             ctx.fillStyle = "#2ecc71";
             ctx.fillRect(p.x, 0, p.width, p.y);
@@ -149,37 +175,18 @@ function draw() {
         }
     });
 
+    // Bird
     const bImg = assets.bird[selections.bird];
     ctx.save();
     ctx.translate(bird.x, bird.y);
-    ctx.rotate(Math.min(Math.PI/4, Math.max(-Math.PI/4, bird.velocity * 0.08)));
+    ctx.rotate(Math.min(Math.PI/4, Math.max(-Math.PI/4, bird.velocity * 0.07)));
     if (bImg.complete && bImg.naturalWidth !== 0) {
         ctx.drawImage(bImg, -birdSize/2, -birdSize/2, birdSize, birdSize);
     } else {
-        ctx.fillStyle = "yellow"; ctx.beginPath(); ctx.arc(0, 0, birdSize/2, 0, Math.PI*2); ctx.fill();
+        ctx.fillStyle = "#f1c40f"; ctx.beginPath(); ctx.arc(0, 0, birdSize/2, 0, Math.PI*2); ctx.fill();
     }
     ctx.restore();
 }
-
-function startGame() {
-    score = 0;
-    pipes = [];
-    bird = { x: canvas.width * 0.2, y: canvas.height / 2, velocity: 0 };
-    gameState = 'PLAYING';
-    document.getElementById('home-menu').style.display = 'none';
-    document.getElementById('hud').style.display = 'flex';
-    updateHUD();
-    gameLoop();
-}
-
-function endGame() {
-    gameState = 'MENU';
-    cancelAnimationFrame(animationId);
-    document.getElementById('home-menu').style.display = 'flex';
-    document.getElementById('hud').style.display = 'none';
-}
-
-function exitGame() { if(confirm("Keluar?")) window.close(); }
 
 function gameLoop() {
     if (gameState === 'PLAYING') {
@@ -189,12 +196,18 @@ function gameLoop() {
     }
 }
 
-const handleInput = (e) => { if(gameState === 'PLAYING') bird.velocity = jump; };
+const handleInput = (e) => { 
+    if(gameState === 'PLAYING') bird.velocity = jump; 
+};
 window.addEventListener('keydown', (e) => { if(e.code === 'Space') handleInput(); });
 canvas.addEventListener('mousedown', handleInput);
-canvas.addEventListener('touchstart', (e) => { e.preventDefault(); handleInput(); }, {passive: false});
+canvas.addEventListener('touchstart', (e) => { 
+    e.preventDefault(); handleInput(); 
+}, {passive: false});
 
 window.addEventListener('resize', setupDimensions);
+
+function exitGame() { if(confirm("Keluar dari game?")) window.location.href = "about:blank"; }
 
 loadAssets();
 setupDimensions();
