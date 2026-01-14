@@ -14,20 +14,16 @@ body {
     position: relative; 
     width: 100%; 
     height: 100%; 
-    max-width: 100%; 
-    max-height: 100%; 
+    background: #70c5ce;
 }
 
-canvas { 
-    display: block; 
-    width: 100%; 
-    height: 100%; 
-}
+canvas { display: block; width: 100%; height: 100%; }
 
+/* Overlay UI */
 .overlay {
     position: absolute; 
     inset: 0; 
-    background: rgba(0, 0, 0, 0.8); 
+    background: rgba(0, 0, 0, 0.75); 
     color: white; 
     display: flex; 
     flex-direction: column; 
@@ -38,90 +34,60 @@ canvas {
 }
 
 h1 { 
-    font-size: clamp(2.5rem, 8vw, 5rem); 
+    font-size: clamp(3rem, 12vw, 6rem); 
     color: #f1c40f; 
-    text-shadow: 4px 4px #2c3e50; 
+    text-shadow: 6px 6px #2c3e50; 
     margin-bottom: 20px; 
-    text-align: center;
 }
 
 .menu-bird { 
-    width: clamp(60px, 15vw, 100px); 
+    width: 100px; 
     height: auto; 
-    margin-bottom: 10px; 
     animation: float 2s ease-in-out infinite; 
+    margin-bottom: 10px;
 }
 
 @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-15px); }
+    0%, 100% { transform: translateY(0) rotate(-5deg); }
+    50% { transform: translateY(-20px) rotate(5deg); }
 }
 
+/* Tombol */
 .button-group { width: 100%; max-width: 300px; }
-
 .menu-btn {
-    width: 100%; 
-    padding: 15px; 
-    margin: 8px 0; 
-    font-size: 1.2rem; 
-    font-weight: 800;
-    border: none; 
-    border-radius: 12px; 
-    background: #e67e22; 
-    color: white; 
-    cursor: pointer;
-    box-shadow: 0 6px #d35400;
-    transition: 0.1s;
+    width: 100%; padding: 18px; margin: 10px 0; 
+    font-size: 1.4rem; font-weight: 800; border: none; 
+    border-radius: 15px; background: #e67e22; color: white; 
+    cursor: pointer; box-shadow: 0 8px #d35400; transition: 0.1s;
 }
-
 .menu-btn:active { transform: translateY(4px); box-shadow: 0 2px #d35400; }
-.btn-blue { background: #3498db; box-shadow: 0 6px #2980b9; }
-.btn-red { background: #e74c3c; box-shadow: 0 6px #c0392b; }
-.btn-small { max-width: 150px; margin-top: 15px; }
+.btn-blue { background: #3498db; box-shadow: 0 8px #2980b9; }
+.btn-red { background: #e74c3c; box-shadow: 0 8px #c0392b; }
+.btn-small { max-width: 180px; font-size: 1rem; }
 
-/* Skin Grid */
-.tab-container { display: flex; gap: 8px; margin-bottom: 15px; }
-.tab-btn { padding: 8px 15px; background: #444; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 0.9rem; }
+/* Skin System */
+.tab-container { display: flex; gap: 10px; margin-bottom: 20px; }
+.tab-btn { padding: 10px 20px; background: #444; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; }
 .tab-btn.active { background: #f1c40f; color: #000; }
 
 .skin-grid { 
-    display: grid; 
-    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); 
-    gap: 10px; 
-    width: 100%; 
-    max-width: 450px; 
-    max-height: 40vh; 
-    overflow-y: auto; 
-    background: rgba(255,255,255,0.1); 
-    padding: 15px; 
-    border-radius: 15px;
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; 
+    width: 100%; max-width: 500px; max-height: 40vh; 
+    overflow-y: auto; background: rgba(255,255,255,0.1); padding: 15px; border-radius: 15px;
 }
-
-.skin-item { 
-    aspect-ratio: 1; 
-    border: 3px solid #fff; 
-    border-radius: 10px; 
-    cursor: pointer; 
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-    background: #222; 
-}
-
+.skin-item { aspect-ratio: 1; border: 3px solid #fff; border-radius: 12px; cursor: pointer; background: #222; display: flex; justify-content: center; align-items: center; }
 .skin-item.active { border-color: #2ecc71; background: #1e8449; }
 .skin-item img { width: 80%; height: 80%; object-fit: contain; }
 
+/* HUD */
 #hud {
-    position: absolute; 
-    top: 15px; 
-    left: 0; 
-    width: 100%; 
-    padding: 0 20px; 
-    display: flex; 
-    justify-content: space-between; 
-    color: white; 
-    font-size: 1.2rem; 
-    text-shadow: 2px 2px #000; 
-    pointer-events: none; 
-    z-index: 5;
+    position: absolute; top: 0; left: 0; width: 100%; padding: 20px;
+    display: flex; justify-content: space-between; pointer-events: none; z-index: 5;
 }
+.score-box { 
+    background: rgba(0,0,0,0.5); padding: 5px 15px; border-radius: 10px;
+    color: white; font-size: 1.2rem; text-shadow: 2px 2px #000;
+}
+
+/* Sembunyikan bar pencarian saat fullscreen */
+:fullscreen #game-container { width: 100vw; height: 100vh; }
