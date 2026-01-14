@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>ORA BIRD</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
@@ -11,12 +11,12 @@
 
 <div id="game-container">
     <div id="hud" style="display: none;">
-        <span id="score-label">SKOR: <span id="current-score">0</span></span>
-        <span id="best-label">TERBAIK: <span id="high-score">0</span></span>
+        <div class="score-box">SKOR: <span id="current-score">0</span></div>
+        <div class="score-box">TERBAIK: <span id="high-score">0</span></div>
     </div>
 
     <div id="home-menu" class="overlay">
-        <img src="skinbird1.webp" class="menu-bird" onerror="this.style.display='none'">
+        <img src="skinbird1.webp" class="menu-bird" alt="Bird" onerror="this.style.display='none'">
         <h1>ORA BIRD</h1>
         <div class="button-group">
             <button class="menu-btn" onclick="startGame()">MAIN</button>
